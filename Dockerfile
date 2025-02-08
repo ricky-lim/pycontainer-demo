@@ -11,6 +11,6 @@ COPY uv.lock .
 # Create and use virtual environment
 RUN uv venv .venv
 ENV PATH="/app/.venv/bin:$PATH"
-RUN uv sync 
+RUN uv sync
 
 ENTRYPOINT ["robot"]
