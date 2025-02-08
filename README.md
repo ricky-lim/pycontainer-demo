@@ -1,6 +1,7 @@
 # pycontainer-demo
 
-![CI workflow](https://github.com/ricky-lim/pycontainer-demo/actions/workflows/ci.yml/badge.svg)
+![CI Status](https://github.com/ricky-lim/pycontainer-demo/actions/workflows/ci.yml/badge.svg)
+
 
 Python containerization demo with PostgreSQL, testcontainers for integration testing, and GitHub Actions CI/CD.
 

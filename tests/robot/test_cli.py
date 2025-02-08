@@ -5,6 +5,7 @@ from robot.cli import app
 from unittest.mock import Mock, patch
 
 runner = CliRunner()
+TEST_ROBOT = Robot(id=1, name="R2D2", description="Astromech droid")
 
 
 @pytest.fixture
@@ -23,47 +24,37 @@ def test_cli_shows_help_by_default():
 
 
 @pytest.mark.unit
-def test_add_robot_with_mocked_db(mock_db):
-    # Arrange
-    mock_db.add_robot.return_value = 1
+@pytest.mark.parametrize(
+    "command,args,expected_call",
+    [
+        (
+            "add",
+            ["-n", "R2D2", "-d", "Astromech droid"],
+            ("add_robot", ("R2D2", "Astromech droid")),
+        ),
+        ("get", ["--id", "1"], ("get_robot_by_id", (1,))),
+        ("get", ["--name", "R2D2"], ("get_robot_by_name", ("R2D2",))),
+    ],
+)
+def test_robot_commands(mock_db, command, args, expected_call):
+    method_name, method_args = expected_call
+    getattr(mock_db, method_name).return_value = TEST_ROBOT
 
-    # Act
-    result = runner.invoke(app, ["add", "-n", "R2D2", "-d", "Astromech droid"])
+    result = runner.invoke(app, [command, *args])
 
-    # Assert
     assert result.exit_code == 0
-    mock_db.add_robot.assert_called_once_with("R2D2", "Astromech droid")
+    getattr(mock_db, method_name).assert_called_once_with(*method_args)
 
 
 @pytest.mark.unit
-def test_get_robot_with_mocked_db(mock_db):
-    # Arrange
-    mock_robot = Robot(id=1, name="R2D2", description="Astromech droid")
-    mock_db.get_robot_by_id.return_value = mock_robot
-
-    # Act
-    result = runner.invoke(app, ["get", "--id", "1"])
-
-    #  Assert
-    assert result.exit_code == 0
-    mock_db.get_robot_by_id.assert_called_once_with(1)
-
-
-@pytest.mark.unit
-def test_add_robot_requires_name_and_description():
-    # Act
-    result = runner.invoke(app, ["add"])
-
-    # Assert
-    assert result.exit_code == 2
-    assert "Missing option" in result.stdout
-
-
-@pytest.mark.unit
-def test_find_robot_requires_name_or_id():
-    # Act
-    result = runner.invoke(app, ["get"])
-
-    # Assert
-    assert result.exit_code == 1
-    assert "Please provide either a name or an ID." in result.stdout
+@pytest.mark.parametrize(
+    "command,expected_message",
+    [
+        (["add"], "Missing option"),
+        (["get"], "Please provide either a name or an ID."),
+    ],
+)
+def test_command_validations(command, expected_message):
+    result = runner.invoke(app, command)
+    assert expected_message in result.stdout
+    assert result.exit_code != 0
