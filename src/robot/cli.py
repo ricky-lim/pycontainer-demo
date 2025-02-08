@@ -65,19 +65,16 @@ def get(
     id: int = typer.Option(None, "--id", "-i", help="ID of the robot"),
 ):
     """Get robot by name or ID."""
-    if not name and not id:
-        print("[red]Please provide either a name or an ID.[/red]")
-        raise typer.Exit(1)
-
-    repo = get_db(ctx)
 
     match (name, id):
         case (None, None):
             print("[red]Please provide either a name or an ID.[/red]")
             raise typer.Exit(1)
         case (str(), None):
+            repo = get_db(ctx)
             robot = repo.get_robot_by_name(name)
         case (None, int()):
+            repo = get_db(ctx)
             robot = repo.get_robot_by_id(id)
 
     match robot:
