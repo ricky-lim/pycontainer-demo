@@ -1,4 +1,8 @@
-# README.md
+# pycontainer-demo
+
+![CI workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+
+Python containerization demo with PostgreSQL, testcontainers for integration testing, and GitHub Actions CI/CD.
 
 For a demo, there is a app named "robot".
 
