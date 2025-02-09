@@ -17,15 +17,18 @@ dev = [
 test = [
     "pytest>=7.4.3",
     "testcontainers>=3.7.1",
+    "docker>=7.1.0",
 ]
 
 [project.scripts]
 robot = "robot.cli:app"
 
 [tool.pytest.ini_options]
+testpaths = ["tests"]
 markers = [
     "unit: unit test",
     "integration: integration test",
+    "end_to_end: end-to-end test",
 ]
 
 [build-system]

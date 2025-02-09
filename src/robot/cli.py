@@ -53,7 +53,7 @@ def add(
     repo = get_db(ctx)
     try:
         robot_id = repo.add_robot(name, description)
-        print(f"[green]✓ User created successfully with ID: {robot_id}[/green]")
+        print(f"[green]✓ Robot created successfully with ID: {robot_id}[/green]")
     except Exception as e:
         print(f"[red]✗ Error creating user: {str(e)}[/red]")
 

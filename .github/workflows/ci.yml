@@ -36,6 +36,9 @@ jobs:
             - name: Run integration tests
               run: uv run pytest -m integration
 
+            - name: Run end-to-end tests
+              run: uv run pytest -m end_to_end
+
     build:
         needs: [lint, test]
         runs-on: ubuntu-latest

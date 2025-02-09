@@ -295,12 +295,14 @@ dev = [
     { name = "pre-commit" },
 ]
 test = [
+    { name = "docker" },
     { name = "pytest" },
     { name = "testcontainers" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "docker", marker = "extra == 'test'", specifier = ">=7.1.0" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=2.15.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.9" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=7.4.3" },
