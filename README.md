@@ -2,8 +2,7 @@
 
 ![CI Status](https://github.com/ricky-lim/pycontainer-demo/actions/workflows/ci.yml/badge.svg)
 
-
-Python containerization demo with PostgreSQL, testcontainers for integration testing, and GitHub Actions CI/CD.
+Python containerization demo with docker ❤️ PostgreSQL ❤️ testcontainers ❤️ pytest for testing, and GitHub Actions CI/CD.
 
 For a demo, there is a app named "robot".
 
