@@ -2,9 +2,75 @@
 
 ![CI Status](https://github.com/ricky-lim/pycontainer-demo/actions/workflows/ci.yml/badge.svg)
 
-Python containerization demo with docker ❤️ PostgreSQL ❤️ testcontainers ❤️ pytest for testing, and GitHub Actions CI/CD.
+A demonstration project showing how to effectively test dockerized Python applications using docker ❤️ testcontainers ❤️ pytest.
 
-For a demo, there is a app named "robot".
+This project serves as a practical guide for implementing container-based testing strategies with automated CI pipelines.
+
+It's only Continuous Integration (CI), not Continuous Deployment (CD), as this is a demo and not intended to publish artifacts to PyPI or Docker Hub.
+
+## Features
+
+- Docker containerization of Python applications
+- Integration testing with TestContainers
+- Pytest-based test suite
+- Example of testing database interactions
+- Automated CI with GitHub Actions
+
+## Prerequisites
+
+- Docker installed and running
+- Python 3.12+
+- uv package manager
+
+## Installation
+
+First, install uv:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then clone and set up the project:
+
+```bash
+git clone https://github.com/ricky-lim/pycontainer-demo.git
+cd pycontainer-demo
+
+# Setup virtual environment
+uv venv
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Install dependencies
+uv pip install -e ".[dev,test]"
+```
+
+Running tests
+
+```bash
+pytest
+```
+
+Project Structure
+
+```
+├── src/               # Application source code
+├── tests/             # Test files
+├── .github/workflows/ # GitHub Actions workflows
+├── pyproject.toml     # Project configuration
+└── Dockerfile         # Dockerfile for building the app
+```
+
+Install pre-commit hooks
+
+```bash
+pre-commit install
+```
+
+## Usage
+
+For a demo, there is an app "robot".
 
 To run it:
 
@@ -43,10 +109,20 @@ $ docker exec -it robot-postgres psql -U postgres -d postgres -c "SELECT * FROM 
 (1 row)
 ```
 
-## Development
+## CI Pipeline
 
-- Setup virtual environment `uv venv`
-- Activate virtual environment `source .venv/bin/activate`
-- Install dependencies `uv pip install -e ".[dev,test]"`
-- Run test `pytest`
-- Install precommit `pre-commit install`
+The project includes a GitHub Actions workflow for CI. The workflow runs tests on every push to the main branch and on pull requests.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/my-new-feature`)
+5. Open a pull request
+
+## License
+
+This project is licensed under Apache 2.0
