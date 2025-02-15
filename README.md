@@ -68,6 +68,13 @@ Install pre-commit hooks
 pre-commit install
 ```
 
+Apply branch protection rules
+
+```bash
+gh api --method PUT /repos/ricky-lim/pycontainer-demo/branches/main/protection \
+  --input protection-rules.json
+```
+
 ## Usage
 
 For a demo, there is an app "robot".
