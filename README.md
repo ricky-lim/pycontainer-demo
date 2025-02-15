@@ -72,7 +72,7 @@ Apply branch protection rules
 
 ```bash
 gh api --method PUT /repos/ricky-lim/pycontainer-demo/branches/main/protection \
-  --input protection-rules.json
+  --input branch-protection-rules.json
 ```
 
 ## Usage
