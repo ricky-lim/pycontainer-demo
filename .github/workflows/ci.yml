@@ -17,7 +17,13 @@ jobs:
           with:
             python-version: '3.12'
 
-        - uses: pre-commit/action@v3.0.0
+        - if: github.ref != 'refs/heads/main'
+          uses: pre-commit/action@v3.0.0
+
+        - if: github.ref == 'refs/heads/main'
+          uses: pre-commit/action@v3.0.0
+          env:
+            SKIP: no-commit-to-branch
 
     test:
         runs-on: ubuntu-latest
