@@ -9,6 +9,8 @@ repos:
     -   id: detect-private-key
     -   id: detect-aws-credentials
         args: ["--allow-missing-credentials"]
+    -   id: no-commit-to-branch
+        args: ["--branch", "main"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.6

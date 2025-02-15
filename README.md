@@ -50,3 +50,11 @@ $ docker exec -it robot-postgres psql -U postgres -d postgres -c "SELECT * FROM 
 - Install dependencies `uv pip install -e ".[dev,test]"`
 - Run test `pytest`
 - Install precommit `pre-commit install`
+
+## Admin
+
+Apply branch protection
+
+```
+gh api --method PUT /repos/ricky-lim/pycontainer-demo/branches/main/protection --input branch-protection-rules.json
+```
