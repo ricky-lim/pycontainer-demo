@@ -1,0 +1,86 @@
+name: Version Bump
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PYCONTAINER_DEMO_WORKFLOW_TOKEN }}
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bump-my-version
+        run: pip install bump-my-version
+
+      - name: Configure Git
+        run: |
+          git config user.name "ricky-lim"
+          git config user.email "rlim.email@gmail.com"
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          if [[ $PR_BRANCH == bugfix/* ]]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == feature/* ]]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == release/* ]]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version and update CHANGELOG.md
+        id: bump-version
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          # Store initial commit for potential revert
+          echo "initial_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+          # Bump the version
+          bump-my-version bump ${{ steps.bump-type.outputs.bump }}
+
+          NEW_VERSION=$(grep 'version = ' pyproject.toml | cut -d'"' -f2)
+          echo "new_version_tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+          DATE=$(date +%Y-%m-%d)
+          # Replace NEXT with version and date
+          sed -i.bak "s/## NEXT/## [$NEW_VERSION] - $DATE/" CHANGELOG.md
+          rm CHANGELOG.md.bak
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md for version $NEW_VERSION"
+
+      - name: Push changes
+        id: push
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          git push origin main
+          git push --tags
+
+      - name: Revert on push failure
+        id: revert-push
+        if: failure()
+        run: |
+          echo "Reverting changes due to push failure"
+          echo "Revering to commit ${{ steps.bump-version.outputs.initial_commit }}"
+          git reset --hard ${{ steps.bump-version.outputs.initial_commit }}
+          git push -f origin main
+
+          # Remove tag if  it exists
+          git push --delete origin "${{ steps.bump-version.outputs.new_version_tag }}" || true
+          git tag -d "${{ steps.bump-version.outputs.new_version_tag }}" || true
