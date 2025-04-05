@@ -18,3 +18,9 @@ repos:
     -   id: ruff
         args: [--fix]
     -   id: ruff-format
+
+-   repo: https://github.com/ricky-lim/pre-commit-hooks
+    rev: v0.6.0
+    hooks:
+    -   id: check-changelog
+        stages: [pre-push]
