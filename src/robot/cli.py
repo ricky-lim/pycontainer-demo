@@ -1,4 +1,5 @@
 import typer
+from art import tprint
 from typing import Annotated
 from rich.console import Console
 from rich import print
@@ -6,7 +7,9 @@ from rich.table import Table
 from robot.robot_repository import RobotRepository
 from robot.config import DatabaseConfig
 
-app = typer.Typer(help="Robot Management System", no_args_is_help=True)
+
+header = tprint("Robot Management System")
+app = typer.Typer(help=header, no_args_is_help=True)
 console = Console()
 
 
