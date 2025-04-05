@@ -6,3 +6,4 @@
 ### Added
 
 - Added versioning
+- Added changelog
