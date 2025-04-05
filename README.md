@@ -1,6 +1,7 @@
 # pycontainer-demo
 
 ![CI Status](https://github.com/ricky-lim/pycontainer-demo/actions/workflows/ci.yml/badge.svg)
+[![Changelog](https://img.shields.io/badge/changelog-Common%20Changelog-blue.svg)](CHANGELOG.md)
 
 A demonstration project showing how to effectively test dockerized Python applications using docker ❤️ testcontainers ❤️ pytest.
 
