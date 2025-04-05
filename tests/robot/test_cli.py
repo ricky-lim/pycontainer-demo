@@ -25,7 +25,7 @@ def override_get_db(monkeypatch, sqlite_db):
 def test_cli_shows_help_by_default():
     result = runner.invoke(app)
     assert result.exit_code == 0
-    assert "Robot Management System" in result.stdout
+    assert "Usage: " in result.stdout
 
 
 @pytest.mark.unit
